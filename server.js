@@ -325,7 +325,6 @@ app.get("/api/ticket-stats", (req, res) => {
 
   let params = [];
 
-  // 🔥 FILTER BERDASARKAN ROLE
   if (role === "user") {
     // 👤 user → hanya ticket miliknya
     sql += " WHERE requester = ?";
@@ -336,8 +335,6 @@ app.get("/api/ticket-stats", (req, res) => {
     sql += " WHERE assigned_to = ?";
     params.push(userId);
   }
-
-  // 👑 admin → tidak difilter (lihat semua)
 
   sql += " GROUP BY status";
 
@@ -360,7 +357,7 @@ app.get("/api/ticket-stats", (req, res) => {
 
       const status = row.status
         .toLowerCase()
-        .replace(/\s+/g, "_"); // 🔥 penting
+        .replace(/\s+/g, "_");
 
       if (stats.hasOwnProperty(status)) {
         stats[status] = row.total;
