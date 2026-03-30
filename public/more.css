@@ -1,0 +1,261 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0f215a, #002c8b, #003380);
+  min-height: 100vh;
+}
+
+.sidebar-toggle {
+  all: unset;
+  position: fixed;
+  top: 24px;
+  left: 18px;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: white;
+  color: #003c96;
+  font-size: 19px;
+  font-weight: bolder;
+  line-height: 1;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  transition: ease-out;
+  transition-duration: 0.25s;
+}
+
+.sidebar-toggle:hover{
+  color: white;
+  background: #003c96;
+  transition: ease-in-out;
+  transition-duration: 0.25s;
+}
+
+.sidebar {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 280px;
+  height: calc(110vh - 40px);
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 20px 50px -30px rgba(0, 0, 0, 0.35);
+  transform: translateX(-120%);
+  transition: 0.35s ease;
+  z-index: 25;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  margin: 0px;
+  font-weight: 600;
+  color: #003c96;
+  margin-bottom: 20px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #333;
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+.sidebar nav a:hover {
+  background: #003c96;
+  color: white;
+}
+
+body.sidebar-open .sidebar {
+  transform: translateX(0);
+}
+
+body.sidebar-open .sidebar-toggle,
+body.sidebar-open .sidebar-toggle:hover {
+  transform: translateX(300px);
+  transition: ease-in;
+  transition: ease-out;
+  transition-duration: 0.25s;
+}
+
+header {
+  background: #00308a;
+  width: 100%;
+  padding: 25px 0;
+  margin-bottom: 40px;
+  box-shadow: 0 30px 60px -40px #00308a;
+}
+
+header h1 {
+  font-size: clamp(22px, 3vw, 35px);
+  color: white;
+  margin-left: 30%;
+}
+
+header p {
+  color: white;
+  font-size: 17px;
+  margin-left: 30%;
+  padding-bottom: 13px;
+}
+
+.container {
+  display: flex;
+  width: min(1200px, 95vw);
+  margin: 0 auto;
+  padding: 0 40px;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.side {
+  position: sticky;
+  top: 20px;
+  flex: 0 0 32%;
+  min-height: calc(100vh - 40px);
+  background: white;
+  padding: 30px;
+  border: 1px solid #006db6;
+  border-radius: 10px;
+  margin-left: -30px;
+  margin-top: 10px;
+}
+
+.side h2 {
+  color: #002c8b;
+  font-weight: bold;
+}
+
+.side ul {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.side li {
+  white-space: normal;
+  padding: 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.side li:hover {
+  background: #eaeaea;
+  border-radius: 8px;
+}
+
+.side li.active {
+  border-left: 4px solid rgb(0, 153, 0);
+  border-radius: 8px;
+  background: #eaeaea;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 45px;
+}
+
+.content h1 {
+  font-size: 38px;
+  scroll-margin-top: 160px;
+  line-height: 55px;
+  color: white;
+  margin-bottom: 14px;
+}
+
+.content p {
+  font-size: 19px;
+  line-height: 1.6;
+  color: white;
+  max-width: none;
+}
+
+.decoration {
+    text-decoration: none;
+    color: #fff;
+}
+
+.decoration:hover {
+    text-decoration: underline;
+}
+
+footer {
+  margin-top: auto;
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  background: #003392;
+  color: #fff;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+
+  .container {
+    flex-direction: column;
+    padding: 0 20px;
+    gap: 20px;
+  }
+
+  .side {
+    position: relative;
+    width: 100%;
+    min-height: auto;
+    margin-left: 0;
+    margin-top: -20px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .content h1 {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  .content p {
+    font-size: 15px;
+    margin-top: 10px;
+  }
+
+  header h1 {
+    margin-left: 100px;
+    font-size: 26px;
+  }
+
+  header p {
+    margin-left: 100px;
+    font-size: 14px;
+    inline-size: 50%;
+  }
+
+  body.sidebar-open .sidebar-toggle,
+body.sidebar-open .sidebar-toggle:hover {
+  transform: translateX(290px);
+  z-index: 20;
+}
+
+}

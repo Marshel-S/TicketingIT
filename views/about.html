@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TicketingIT - About Us</title>
+<link rel="stylesheet" href="more.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<script>
+function toggleSidebar() {
+  document.body.classList.toggle('sidebar-open');
+}
+</script>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <h2>TicketingIT - PSG</h2>
+
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/ticket">Ticket List</a>
+    <a href="/create">Create Ticket</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact</a>
+    <hr>
+    <a href="/logout">Sign Out</a>
+  </nav>
+</aside>
+
+<header>
+  <h1>About Us</h1>
+  <p>Find out more about our Service!</p>
+</header>
+
+<div class="container">
+
+  <aside class="side">
+
+    <h2>Things should know about TicketingIT system</h2>
+    <br>
+
+    <ul id="sideMenu">
+      <li data-target="ticket">What is a Ticket?</li>
+      <li data-target="organize">How technical do organize our Ticket?</li>
+      <li data-target="flow">How do my Ticket has flow?</li>
+      <li data-target="brought">How could i know where's my Ticket has been brought?</li>
+    </ul>
+
+  </aside>
+
+  <main class="content">
+
+    <p>TicketingIT software allows organizations to resolve their internal IT issues by streamlining the
+      resolution process. The elements they handle, called tickets, provide context about the issues,
+      including details, categories, and any relevant tags.</p>
+
+      <br><br>
+
+    <h1 id="ticket">What is a Ticket?</h1>
+
+    <p>
+    Within an employee IT ticketing system, a ticket is a special document or record that represents
+    an incident, alert, request, or event that requires action from the IT department.
+    It often contains additional contextual details and may also include relevant contact information
+    of the individual who created the ticket.
+    </p>
+
+    <br>
+
+    <p>
+    Tickets are usually employee-generated, but automated tickets may also be created when specific
+    incidents occur and are flagged. Once a ticket is created, it is assigned to an IT agent to be resolved.
+    Effective ticketing systems allow tickets to be submitted via a variety of methods such as
+    virtual agents, phone, email, service portals, live agents, and walk-up experience.
+    </p>
+
+    <br><br>
+
+    <h1 id="organize">How technical do organize our Ticket?</h1>
+    <p>When you submit a ticket on our IT support website, your request is carefully organized
+      so our team can handle it efficiently. Each ticket is given a unique number and stored in our
+      system along with important details such as your issue description, the category of the problem,
+      and the priority level. This helps our support team clearly understand your request and ensures
+      that no ticket gets lost. <br>
+
+      <br>
+
+      Our system also groups tickets based on the type of problem, such as software, network,
+      or hardware issues. By organizing tickets this way, we can quickly direct your request to
+      the right support specialist. This makes the process smoother and helps us respond to your
+      issue as quickly and accurately as possible.</p>
+
+    <br><br>
+
+    <h1 id="flow">How do my Ticket has flow?</h1>
+    <p>After you submit a ticket, it goes through a simple support process so our team can resolve
+      your issue. First, your ticket is received and recorded in our system. Then it is reviewed and
+      assigned to the appropriate support team member who has the expertise to handle your request. <br>
+
+      <br>
+
+      Once assigned, the technician will begin working on the issue and may update the ticket if more
+      information is needed. When the problem has been resolved, the ticket will be marked as completed.
+      This step-by-step process helps ensure that every request is handled properly from start to finish.</p>
+
+    <br><br>
+
+    <h1 id="brought">How could i know where's my Ticket has brought?</h1>
+    <p>You can easily track the progress of your ticket in <a href="/ticket" class="decoration">Ticket List</a> menu. Each ticket has its own
+      tracking number, which allows you to check its current status at any time. This lets you see
+      whether your request has been received, is being reviewed, or is currently being worked on by our
+      support team. <br>
+
+      <br>
+
+      In addition, you may receive updates whenever there is progress on your ticket. These updates
+      help keep you informed about what is happening and which stage your request is currently in.
+      Our goal is to make the support process transparent so you always know the status of your request.</p>
+
+  </main>
+
+</div>
+
+<footer>
+    &copy; <span id="year"></span> TicketingIT. All Rights Reserved.
+</footer>
+
+<script>
+
+const sections = document.querySelectorAll(".content h1");
+const menuItems = document.querySelectorAll("#sideMenu li");
+
+menuItems.forEach(item => {
+
+  item.addEventListener("click", () => {
+
+    const id = item.getAttribute("data-target");
+    const target = document.getElementById(id);
+
+    target.scrollIntoView({
+      behavior: "smooth"
+    });
+
+  });
+
+});
+
+const observer = new IntersectionObserver((entries) => {
+
+  entries.forEach(entry => {
+
+    if(entry.isIntersecting){
+
+      const id = entry.target.id;
+
+      menuItems.forEach(li => {
+        li.classList.remove("active");
+
+        if(li.getAttribute("data-target") === id){
+          li.classList.add("active");
+        }
+
+      });
+
+    }
+
+  });
+
+},{
+  rootMargin: "-40% 0px -55% 0px"
+});
+
+
+sections.forEach(section => {
+  observer.observe(section);
+});
+
+</script>
+
+</body>
+</html>

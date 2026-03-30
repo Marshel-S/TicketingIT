@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Add New Ticket - TicketingIT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<script>
+  function toggleSidebar() {
+    document.body.classList.toggle('sidebar-open');
+  }
+</script>
+
+<body>
+
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <h2>TicketingIT - PSG</h2>
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/ticket">Ticket List</a>
+    <a href="/create">Create Ticket</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact</a>
+    <hr>
+    <a href="/logout">Sign Out</a>
+  </nav>
+</aside>
+
+<div class="ticket">
+<h2>Add New Ticket</h2>
+ 
+<form id="ticketForm" action="/api/tickets" method="post" enctype="multipart/form-data">
+
+  <h4>Subject</h4>
+  <input name="subject" placeholder="Was our problem? (Max 50 Character)" required><br>
+
+  <h4>Requester</h4>
+  <input name="requester" id="userInput" placeholder="Load user..." disabled><br>
+
+  <h4>Email</h4>
+  <input name="email" type="email" placeholder="ichbin@gmail.com" required><br>
+
+  <h4>Select Image</h4>
+  <input type="file" id="attachment" name="attachment">
+
+  <h4>Message</h4>
+  <textarea name="message" placeholder="Type your problem here.." required></textarea><br>
+
+  <h4>Status</h4>
+  <select name="status" id="status" disabled>
+    <option value="Unassigned">Unassigned</option>
+    <option value="Assigned">Assigned</option>
+    <option value="In Progress">On Progress</option>
+    <option value="In review">In review</option>
+    <option value="Done">Done</option>
+  </select>
+
+  <select name="priority" required>
+    <option value="" disabled selected>Select Priority</option>
+    <option>Low</option>
+    <option>Normal</option>
+    <option>Critical</option>
+    <option>Urgent</option>
+  </select><br>
+
+  <input type="submit">
+</form>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+  <button class="close-btn" id="closePopup">&times;</button>
+  <h2 id="popupTitle">Success</h2>
+  <p id="popupMessage">Ticket Created successfully</p>
+  <div class="next-button">
+  <button onclick="goList()">See List</button>
+  <button onclick="goForm()">Back to form</button>
+  </div>
+</div>
+
+<script>
+console.log("Form Script was working");
+
+const form = document.getElementById("ticketForm");
+const popup = document.getElementById("popup");
+const popupTitle = document.getElementById("popupTitle");
+const popupMessage = document.getElementById("popupMessage");
+const closeBtn = document.getElementById("closePopup");
+const overlay = document.getElementById("overlay");
+
+async function loadUser() {
+  const res = await fetch("/api/session");
+  const data = await res.json();
+
+  if (data.loggedIn) {
+    document.getElementById("userInput").value = data.username;
+  }
+}
+
+loadUser();
+
+// ===== FUNCTION POPUP =====
+function showPopup(title, message) {
+  popupTitle.innerText = title;
+  popupMessage.innerText = message;
+  popup.classList.add("show");
+  overlay.classList.add("show");
+}
+
+// ===== CLOSE POPUP =====
+closeBtn.addEventListener("click", () => {
+  popup.classList.remove("show");
+  overlay.classList.remove("show");
+});
+
+function goList() {
+  window.location.href = "/ticket";
+}
+
+  function goForm() {
+  window.location.href = "/create";
+}
+
+// ===== SUBMIT FORM =====
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch("/api/tickets", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) throw new Error("Server Error");
+
+    await res.json();
+
+    showPopup("Success", "Ticket created successfully!");
+    form.reset();
+
+  } catch (err) {
+    showPopup("Error", "Failed to create ticket.");
+    console.error(err);
+  }
+});
+</script>
+
+</body>
+</html>

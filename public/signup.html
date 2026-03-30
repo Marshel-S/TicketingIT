@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="signup-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form method="post" action="/register">
+        <div class="signup-container">
+        <div class="left-column">
+        <h2>Create your Account</h2>
+
+        <h4>What's Your Name?</h4>
+        <input name="identifier" type="text" placeholder="yourname or No Name" required>
+
+        <h4>Password</h4>
+        <input name="password" type="password" placeholder="Remember you have a Secret" required>
+
+        </div>
+        <div class="right-column">
+        <h4>Confirm Password</h4>
+        <input name="confirmPassword" type="password" placeholder="Make sure you remember" required>
+
+        <h4>Your Role</h4>
+        <select name="role" disabled>
+            <option value="user">User</option>
+            <option value="technical">Technical</option>
+            <option value="admin">Admin</option>
+        </select>
+        </div>
+        <a href="login.html">Already have an account? Log in here!</a>
+        <input type="submit" value="Sign Up" id="signupBtn">
+        </form>
+        </div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket List Dashboard - Ticketing IT</title>
+  <link rel="stylesheet" href="list.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+<body>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <h2>TicketingIT - PSG</h2>
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/ticket">Ticket List</a>
+    <a href="/create">Create Ticket</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact</a>
+    <hr>
+    <a href="/logout">Sign Out</a>
+  </nav>
+</aside>
+
+  <header>
+    <h1>Ticket List Dashboard</h1>
+    <p>Wait a minute! Your ticket will be assigned as soon as Possible</p>
+  </header>
+
+<div class="list">
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Subject</th>
+      <th onclick="sort('requester', this)">
+        Requester <span class="sort-icon"></span>
+      </th>
+      <th>Email</th>
+      <th onclick="sort('status', this)">
+        Status <span class="sort-icon"></span>
+      </th>
+      <th onclick="sort('created_at', this)">
+        Created At <span class="sort-icon"></span>
+      </th>
+      <th onclick="sort('priority', this)">
+        Priority <span class="sort-icon"></span>
+      </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody id="data"></tbody>
+</table>
+
+<button onclick="goForm()">Back to Form</button>
+</div>
+
+<script>
+let userRole = null;
+
+const params = new URLSearchParams(window.location.search);
+const status = params.get("status");
+
+fetch("/api/tickets?status=" + status)
+  .then(res => res.json())
+  .then(data => {
+      console.log(data);
+  });
+
+console.log(status);
+
+async function getSession() {
+  const res = await fetch("/api/session", {
+    credentials: "include"
+  });
+  const data = await res.json();
+
+  if (data.loggedIn) {
+    userRole = data.role;
+  }
+}
+
+let sortState = {
+  requester: null,
+  status: null,
+  created_at: null,
+  priority: null
+};
+
+function sortTickets(data, key) {
+
+  if (!sortState[key]) return data;
+
+  return data.sort((a, b) => {
+    let valA = a[key];
+    let valB = b[key];
+
+    if (key === "created_at") {
+      valA = new Date(valA);
+      valB = new Date(valB);
+    } else {
+      valA = (valA || "").toString().toLowerCase();
+      valB = (valB || "").toString().toLowerCase();
+    }
+
+    if (sortState[key] === "asc") {
+      return valA > valB ? 1 : -1;
+    } else {
+      return valA < valB ? 1 : -1;
+    }
+  });
+}
+
+// ===== TOGGLE SORT =====
+function sort(key) {
+
+  if (!sortState[key]) {
+    sortState[key] = "asc";
+  } else if (sortState[key] === "asc") {
+    sortState[key] = "desc";
+  } else {
+    sortState[key] = null;
+  }
+
+  updateSortIcons();
+  loadTickets();
+}
+
+// ===== UPDATE ICON =====
+function getSortIcon(key) {
+  if (sortState[key] === "asc") {
+    return `<span class="fi fi-sr-arrow-small-up"></span>`;
+  }
+  if (sortState[key] === "desc") {
+    return `<span class="fi fi-sr-arrow-small-down"></span>`;
+  }
+  return `<span class="fi fi-sr-sort"></span>`;
+}
+
+// ===== LOAD TICKETS =====
+async function loadTickets() {
+
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get("status");
+
+  let url = "/api/tickets";
+
+  if (status) {
+  url += "?status=" + encodeURIComponent(status);
+  }
+
+  const res = await fetch(url, {
+    credentials: "include"
+  });
+
+  let data = await res.json();
+
+  data = sortTickets(data, "requester");
+  data = sortTickets(data, "status");
+  data = sortTickets(data, "created_at");
+  data = sortTickets(data, "priority");
+
+  const tbody = document.getElementById("data");
+  tbody.innerHTML = "";
+
+  data.forEach(t => {
+
+    const statusText = String(t.status || "Unassigned");
+
+    const statusClass = statusText
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+
+    let deleteButton = "";
+
+    if (userRole !== "user") {
+      deleteButton = `<span class="fi fi-ss-trash" onclick="deleteTicket(${t.id})"></span>`;
+    }
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${t.id}</td>
+        <td>${t.subject}</td>
+        <td>${t.requester}</td>
+        <td>${t.email}</td>
+        <td>
+          <span class="status ${statusClass}">
+            ${statusText}
+          </span>
+        </td>
+        <td>${new Date(t.created_at).toLocaleString("id-ID", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit"
+        })}</td>
+        <td>${t.priority}</td>
+
+        <td class="action-buttons">
+          <span class="fi fi-sr-overview" onclick="viewDetails(${t.id})"></span>
+          ${deleteButton}
+        </td>
+      </tr>
+    `;
+  });
+
+  updateSortIcons();
+}
+
+// ===== UPDATE HEADER ICON =====
+function updateSortIcons() {
+  document.querySelectorAll("th").forEach(th => {
+    const text = th.innerText.toLowerCase();
+
+    if (text.includes("requester")) {
+      th.querySelector(".sort-icon").innerHTML = getSortIcon("requester");
+    }
+    if (text.includes("status")) {
+      th.querySelector(".sort-icon").innerHTML = getSortIcon("status");
+    }
+    if (text.includes("created_at")) {
+      th.querySelector(".sort-icon").innerHTML = getSortIcon("created_at");
+    }
+    if (text.includes("priority")) {
+      th.querySelector(".sort-icon").innerHTML = getSortIcon("priority");
+    }
+  });
+}
+
+(async () => {
+
+await getSession();
+await loadTickets();
+
+})();
+
+function viewDetails(id) {
+  window.location.href = `/details.html?id=${id}`;
+}
+
+async function deleteTicket(id) {
+  if (!confirm(`Are you sure want to delete ID ${id}?`)) return;
+
+  try {
+    const res = await fetch(`/api/tickets/${id}`, {
+      method: "DELETE",
+      credentials: "include"
+    });
+
+    if (res.ok) {
+      location.reload();
+    } else {
+      alert("Gagal menghapus");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function goForm() {
+  window.location.href = "/create";
+}
+
+</script>
+
+<footer>
+    &copy; <span id="year"></span> TicketingIT. All Rights Reserved.
+</footer>
+<script>
+    document.getElementById("year").innerHTML = new Date().getFullYear();
+</script>
+
+<script>
+  function toggleSidebar() {
+    document.body.classList.toggle('sidebar-open');
+  }
+</script>
+</body>
+</html>

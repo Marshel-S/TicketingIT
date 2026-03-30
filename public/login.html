@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketingIT - Log in</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-overlay">
+        <h1>Log in to your Account</h1>
+        <p>Please type your username and password to access TicketingIT</p>
+        <form id="loginForm" method="post" action="/login">
+
+        <h4>Insert Your Username</h4>
+        <input name="email" id="email" type="text" placeholder="yourname or No Name" required><br>
+
+        <h4>Password</h4>
+        <input name="password" id="password" type="password" placeholder="Keep them secret between us" required><br>
+
+        <div id="loginError" class="error-text"></div>
+        <br>
+        <a href="#">Forgot your Password?</a>
+        <br>
+        <br>
+        <input type="submit" value="Login" id="loginBtn">
+        <br>
+        <br>
+        <a href="/signup.html">Didn't have an Account? Sign Up here</a>
+        </form>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="notification.js"></script>
+    <script src="/login.js"></script>
+</body>
+</html>

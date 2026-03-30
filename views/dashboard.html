@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketingIT - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <script>
+  function toggleSidebar() {
+    document.body.classList.toggle('sidebar-open');
+  }
+    </script>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <h2>TicketingIT - PSG</h2>
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/ticket">Ticket List</a>
+    <a href="/create">Create Ticket</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact</a>
+    <hr>
+    <a href="/logout">Sign Out</a>
+  </nav>
+</aside>
+
+<header>
+    <h1 id="greetings"></h1>
+    <p>How was your day?</p>
+</header>
+
+<div class="page-wrapper">
+
+<div class="dashboard">
+
+  <!-- Assigned -->
+  <div class="status-card">
+    <h3>Assigned</h3>
+
+    <div class="progress-bar">
+      <div class="progress" id="assignedBar"></div>
+    </div>
+
+    <p id="assignedText"></p>
+
+    <a href="/ticket?status=Assigned">Details</a>
+  </div>
+
+  <!-- In Progress -->
+  <div class="status-card">
+    <h3>In Progress</h3>
+
+    <div class="progress-bar">
+      <div class="progress" id="progressBar"></div>
+    </div>
+
+    <p id="progressText"></p>
+
+    <a href="/ticket?status=In Progress">Details</a>
+  </div>
+
+  <!-- In Review -->
+  <div class="status-card">
+    <h3>In Review</h3>
+
+    <div class="progress-bar">
+      <div class="progress" id="reviewBar"></div>
+    </div>
+
+    <p id="reviewText"></p>
+
+    <a href="/ticket?status=In Review">Details</a>
+  </div>
+
+  <!-- Done -->
+  <div class="status-card">
+    <h3>Done</h3>
+
+    <div class="progress-bar">
+      <div class="progress" id="doneBar"></div>
+    </div>
+
+    <p id="doneText"></p>
+
+    <a href="/ticket?status=Done">Details</a>
+  </div>
+
+</div>
+
+<div class="bottom-list">
+
+<h2><a href="/ticket">Ticket List</a> (5 Newest Tickets)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Subject</th>
+      <th>Requester</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody id="dashboardTickets"></tbody>
+</table>
+
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="notification.js"></script>
+
+    <script>
+  alert("Welcome to TicketingIT - Enjoy your problem!"); 
+  
+  window.addEventListener("DOMContentLoaded", async () => {
+
+  try {
+    const res = await fetch("/api/session", {
+      credentials: "include"
+    });
+
+    const data = await res.json();
+
+    console.log("SESSION DATA:", data);
+
+    if (data.loggedIn) {
+      document.getElementById("greetings").innerText =
+        "Welcome, " + data.username;
+    }
+
+  } catch (err) {
+    console.error("Session fetch error:", err);
+  }
+
+  });
+
+  async function loadDashboardTickets(){
+
+  const res = await fetch("/api/tickets",{
+    credentials:"include"
+  });
+
+  const data = await res.json();
+
+  const tbody = document.getElementById("dashboardTickets");
+
+  tbody.innerHTML = "";
+
+  data.slice(0,5).forEach(t => {
+
+    const statusText = String(t.status || "Unassigned");
+
+    const statusClass = statusText
+      .toLowerCase()
+      .replace(/\s+/g,"-");
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${t.id}</td>
+        <td>${t.subject}</td>
+        <td>${t.requester}</td>
+        <td>${t.email}</td>
+
+        <td>
+          <span class="status ${statusClass}">
+            ${statusText}
+          </span>
+        </td>
+
+        <td>${t.priority}</td>
+
+      </tr>
+    `;
+
+  });
+
+}
+
+loadDashboardTickets();
+
+</script>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f215a, #002c8b, #003380);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+input {
+    margin: 15px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 2px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f998;
+    transition: 0.3s ease;
+}
+
+h2 {
+    color: #003c8b;
+}
+
+h4 {
+    font-size: 18px;
+    text-align: left;
+    margin-left: 52px;
+    margin-top: 10px;
+}
+
+select {
+    width: 85%;
+    margin: 10px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    color: black;
+    background: #f9f9f9;
+    transition: 0.3s ease;
+}
+
+option {
+    color: black;
+}
+
+.signup-container {
+    width: 800px;
+    max-width: 100%;
+    margin: 40px auto;
+    margin-top: 35px;
+    padding: 40px;
+    padding-right: 65px;
+    background: rgba(255, 255, 255, 0.966);
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.signup-container h2 {
+    grid-column: 1 / 3;
+    margin-bottom: 30px;
+    margin-left: 16px;
+}
+
+.signup-container h4 {
+    margin-left: 20px;
+}
+
+.left-column .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.right-column{
+  margin-top: 55px;
+}
+
+.right-column select{
+  margin-top: 14px;
+  margin-left: 15px;
+}
+
+.signup-container #signupBtn{
+    grid-column: 1 / 3;
+    justify-self: center;
+    background-color: #003483;
+    color: #f9f9f9;
+    width: 85%;
+    cursor: pointer;
+    padding: 13px 30px;
+    margin-top: 10px;
+    margin-left: 40px;
+    font-size: 14px;
+    font-weight: bolder;
+    font-family: 'Poppins', sans-serif;
+}
+
+.signup-container #signupBtn:hover{
+    background-color: #00255e;
+    color: #e6e6e6;
+}
+
+.signup-container a {
+    grid-column: 1 / 3;
+    text-align: center;
+    color: #002a69;
+    text-decoration: none;
+    padding-bottom: 0px;
+}
+
+.signup-container a:hover {
+  text-decoration: underline;
+}
+
+input, select {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+select:disabled {
+  background-color: rgb(171, 255, 168);
+  color: rgb(0, 124, 6);
+}
+
+@media (max-width: 900px) {
+  .signup-container {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 20px;
+  }
+
+  .signup-container {
+    padding: 25px;
+  }
+
+  .action-buttons #signupBtn {
+    flex-direction: column;
+  }
+
+  .action-buttons #signupBtn {
+    width: 100%;
+  }
+}

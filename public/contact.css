@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sidebar-toggle {
+  all: unset;
+  position: fixed;
+  top: 24px;
+  left: 18px;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: white;
+  color: #003c96;
+  font-size: 19px;
+  font-weight: bolder;
+  line-height: 1;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  transition: ease-out;
+  transition-duration: 0.25s;
+}
+
+.sidebar-toggle:hover{
+  color: white;
+  background: #003c96;
+  transition: ease-in-out;
+  transition-duration: 0.25s;
+}
+
+.sidebar {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 280px;
+  height: calc(110vh - 40px);
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 20px 50px -30px rgba(0, 0, 0, 0.35);
+  transform: translateX(-120%);
+  transition: 0.35s ease;
+  z-index: 25;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #003c96;
+  margin-bottom: 20px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #333;
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+.sidebar nav a:hover {
+  background: #003c96;
+  color: white;
+}
+
+body.sidebar-open .sidebar {
+  transform: translateX(0);
+}
+
+body.sidebar-open .sidebar-toggle,
+body.sidebar-open .sidebar-toggle:hover {
+  transform: translateX(300px);
+  transition: ease-in-out;
+  transition-duration: 0.25s;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f215a, #002c8b, #003380);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    gap: 60px;
+}
+
+.form-contact {
+    flex: 1;
+    margin-top: 100px;
+    margin-left: -30px;
+    background-color: rgb(241, 241, 241);
+    padding: 50px 30px;
+    max-height: 2000px;
+    border-radius: 8px;
+}
+
+.form-contact h1 {
+    margin-top: -20px;
+}
+
+.form-contact p {
+    margin-top: 3px;
+    color: #0043a7;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.form-contact s {
+    color: #1b1b1b;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.form-contact h4 {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.form-contact input {
+    width: 100%;
+    margin: 15px 0;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    transition: 0.3s ease;
+}
+
+.form-contact .statement {
+    cursor: auto;
+    text-decoration: none;
+    font-size: 13px;
+    color: #000;
+    transition: 0.2s ease-in-out;
+}
+
+.form-contact .statement a:hover {
+    color: #003c96;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: 0.1s ease-in;
+}
+
+.form-contact input[type="submit"] {
+    background-color: rgb(74, 201, 23);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    min-width: 10%;
+    transition: 0.15s ease;
+    cursor: pointer;
+}
+
+.form-contact input[type="submit"]:hover {
+    background-color: rgb(85, 218, 32);
+    transition: 0.15s ease;
+}
+
+.desc {
+  position: sticky; 
+  flex: 1;
+  min-width: 0;
+  padding: 45px;
+  margin-top: 100px;
+}
+
+.desc h2 {
+  background-color:#4dd100;
+  border-radius: 3px;
+  padding: 2px 10px;
+  scroll-margin-top: 160px;
+  color: white;
+  margin-bottom: 14px;
+}
+
+.desc p {
+  margin-left: -5px;
+  color: #fff;
+  font-size: 20px;
+  inline-size: 550px;
+}
+
+.fa-location-dot {
+  color: #5be400;
+  font-size: 26px;
+}
+
+.fa-phone {
+  color: #5be400;
+  font-size: 26px;
+}
+
+.fa-envelope {
+  color: #5be400;
+  font-size: 26px;
+}
+
+.address {
+  color: white;
+  margin-top: 20px;
+}
+
+.address i {
+  padding-inline-end: 20px;
+}
+
+@media (max-width: 768px) {
+
+    .container{
+        flex-direction: column;
+        gap: 30px;
+        max-width: 100%;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .form-contact{
+        margin-top: 60px;
+        margin-left: 0;
+        min-width: 100%;
+        padding: 42px 20px;
+    }
+
+    .desc{
+        margin-top: 0;
+        padding: 20px 10px;
+        padding-bottom: 50px;
+    }
+
+    .desc p{
+        inline-size: 100%;
+        font-size: 16px;
+    }
+
+}

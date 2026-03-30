@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketingIT - Contact</title>
+    <link rel="stylesheet" href="contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<script>
+  function toggleSidebar() {
+    document.body.classList.toggle('sidebar-open');
+  }
+</script>
+
+<body>
+
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+<aside class="sidebar">
+  <h2>TicketingIT - PSG</h2>
+  <nav>
+    <a href="/dashboard">Home</a>
+    <a href="/ticket">Ticket List</a>
+    <a href="/create">Create Ticket</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact</a>
+    <hr>
+    <a href="/logout">Sign Out</a>
+  </nav>
+</aside>
+
+<div class="container">
+
+<div class="form-contact">
+<form action="" id="contactForm" method="post"></form>
+
+<h1>Talk to an Expert</h1>
+<p>Ask anything to made your service!</p><br>
+
+<h4>Email</h4>
+<input name="email" type="email" placeholder="Business E-mail *" required>
+
+<h4>First Name</h4>
+<input type="text" id="firstName" placeholder="Your First Name *" required>
+
+<h4>Last Name</h4>
+<input type="text" id="lastName" placeholder="Your Last Name">
+
+<h4>Company</h4>
+<input type="text" id="company" placeholder="Enter your Company Name *" required>
+
+<h4>Phone</h4>
+<input type="number" id="phoneNumber" placeholder="Enter your Phone Number *" required>
+
+<p class="statement">By submitting this form, I confirm that I have read and agree to the <a> Privacy Statement.</a></p>
+
+<input type="submit" value="Contact" id="submit"><br>
+
+<s>Fields with an asterisk (*) are required to fill.</s>
+</div>
+
+<div class="desc">
+  <h2>Optimize your Company with our Ticket System</h2>
+  <p>Find your way to manage a Ticket in the <b>Easiest</b> way!</p>
+
+  <div class="address">
+  <h3><i class="fa-solid fa-location-dot"></i>64 John Down Avenue, Hallfax, UK</h3>
+  </div>
+
+  <div class="address">
+  <h3><i class="fa-solid fa-phone"></i>(+44) 822 1234</h3>
+  </div>
+
+  <div class="address">
+  <h3><i class="fa-solid fa-envelope"></i>tickit@gmail.com</h3>
+  </div>
+
+</div>
+</div>
+
+<script>
+  const form = document.getElementById("contactForm");
+
+  async function loadUser() {
+  const res = await fetch("/api/session");
+  const data = await res.json();
+
+  if (data.loggedIn) {
+    document.getElementById("userInput").value = data.username;
+  }
+}
+
+loadUser();
+</script>
+</div>
+</body>
+</html>
