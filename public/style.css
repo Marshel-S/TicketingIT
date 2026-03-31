@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+/* ===== TOGGLE ===== */
 .sidebar-toggle {
   all: unset;
   position: fixed;
@@ -17,29 +18,26 @@
   color: #003c96;
   font-size: 19px;
   font-weight: bolder;
-  line-height: 1;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   z-index: 20;
-  transition: ease-out;
-  transition-duration: 0.25s;
+  transition: 0.25s ease;
 }
 
-.sidebar-toggle:hover{
+.sidebar-toggle:hover {
   color: white;
   background: #003c96;
-  transition: ease-in-out;
-  transition-duration: 0.25s;
 }
 
+/* ===== SIDEBAR ===== */
 .sidebar {
   position: fixed;
   top: 10px;
   left: 10px;
   width: 280px;
-  height: calc(110vh - 40px);
-  background: #ffffff;
+  height: calc(100vh - 20px);
+  background: #fff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 20px 50px -30px rgba(0, 0, 0, 0.35);
@@ -51,7 +49,6 @@
 
 .sidebar h2 {
   font-size: 18px;
-  margin: 0px;
   font-weight: 600;
   color: #003c96;
   margin-bottom: 20px;
@@ -81,160 +78,89 @@ body.sidebar-open .sidebar {
   transform: translateX(0);
 }
 
-body.sidebar-open .sidebar-toggle,
-body.sidebar-open .sidebar-toggle:hover {
+body.sidebar-open .sidebar-toggle {
   transform: translateX(300px);
-  transition: ease-in-out;
-  transition-duration: 0.25s;
 }
 
+/* ===== BODY ===== */
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #0f215a, #002c8b, #003380);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
     padding: 20px;
 }
 
-.login-overlay {
-  background-color: rgba(255, 255, 255, 0.966);
-  padding: 40px;
-  border-radius: 20px;
-  border: none;
-  font-size: smaller;
-}
-
-.login-overlay h1 {
-  color: #00378a;
-}
-
-.login-overlay p {
-  margin-top: 3px;
-}
-
-.login-overlay h4 {
-  margin: 20px 0px 15px;
-}
-
-.login-overlay input {
-  margin: 2px 0px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.432);
-}
-
-#loginBtn {
-  width: 100%;
-  background-color: #003483;
-  color: #f9f9f9;
-  cursor: pointer;
-  transition: ease-in-out;
-  transition-duration: 0.15s;
-}
-
-#loginBtn:hover {
-  background-color: #002a69;
-  color: #d3d3d3;
-  transition: ease-in-out;
-  transition-duration: 0.15s;
-}
-
-.login-overlay a {
-  text-decoration: none;
-  color: #00319b;
-}
-
-.login-overlay a:hover {
-  text-decoration: underline;
-}
-
+/* ===== CARD ===== */
 .ticket {
-    background: rgba(255, 255, 255, 0.945);
-    padding: 45px;
-    width: min(650px, 92vw);
-    border-radius: 25px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-    transition: 0.4s ease;
+    background: rgba(255, 255, 255, 0.95);
+    padding: clamp(20px, 4vw, 45px);
+    width: 100%;
+    max-width: 650px;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .ticket:hover {
     transform: translateY(-3px);
 }
 
-.ticket, h2 {
+.ticket h2 {
     text-align: center;
     font-weight: 700;
     font-size: 22px;
-    margin-bottom: 30px;
-    color: #000;
-}
-
-h2 {
+    margin-bottom: 20px;
     color: #003c8b;
 }
 
+/* ===== FORM ===== */
+#ticketForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ===== LABEL ===== */
 h4 {
-    font-size: 18px;
-    text-align: left;
-    margin-left: 52px;
-    margin-top: 10px;
+    font-size: 15px;
+    margin: 10px 0 5px;
 }
 
-input {
-    width: 85%;
-    margin: 15px;
+/* ===== INPUT ===== */
+input,
+textarea,
+select {
+    width: 100%;
     padding: 14px 16px;
-    border-radius: 14px;
-    border: 2px solid #ddd;
-    outline: none;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-    background: #f9f9f998;
-    transition: 0.3s ease;
-}
-
-textarea {
-    resize: none;
-    height: 100px;
-    margin: 10px;
-    width: 85%;
     border-radius: 12px;
     border: 2px solid #ddd;
     outline: none;
-    padding: 14px 14px;
     font-size: 14px;
     font-family: 'Poppins', sans-serif;
     background: #f9f9f9b6;
     transition: 0.3s ease;
 }
 
-select {
-    width: 85%;
-    margin: 15px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    outline: none;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
-    color: black;
-    background: #f9f9f9;
-    transition: 0.3s ease;
+textarea {
+    resize: vertical;
+    min-height: 100px;
 }
 
-option {
-    color: black;
-}
-
+/* ===== DISABLED ===== */
 select:disabled {
   cursor: not-allowed;
   background-color: rgb(255, 190, 190);
   color: rgb(182, 0, 0);
 }
 
+/* ===== BUTTON ===== */
 input[type="submit"] {
-    width: 85%;
     padding: 16px;
     border: none;
     border-radius: 14px;
@@ -244,27 +170,21 @@ input[type="submit"] {
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
-    margin-bottom: 8px;
-    transition: 0.3s ease;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
-    transition: ease-out;
-    transition-duration: 0.2s;
+    transition: 0.2s ease;
 }
 
 input[type="submit"]:hover {
     background: linear-gradient(180deg, #00367e, #083161);
-    color: white;
-    cursor: pointer;
-    transition: 0.3s ease;
-    transition: ease-in-out;
-    transition-duration: 0.2s;
 }
 
+/* ===== USER ===== */
 #userInput {
   background-color: #dae5ff;
   font-style: italic;
 }
 
+/* ===== POPUP ===== */
 .overlay {
   position: fixed;
   top: 0;
@@ -286,18 +206,18 @@ input[type="submit"]:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30%;
+  width: min(90%, 400px);
   padding: 20px;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 2px 5px 5px rgba(0, 0, 0, 0.1);
-  margin-top: -25px;
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
   opacity: 0;
   z-index: 1001;
 }
 
-.popup > * {
-  margin: 15px 0px;
+.popup.show {
+  display: block;
+  opacity: 1;
 }
 
 .popup p {
@@ -314,21 +234,16 @@ input[type="submit"]:hover {
   background: #ffb3b3;
   color: #aa0000;
   border: none;
-  outline: none;
   border-radius: 50%;
   cursor: pointer;
 }
 
-.popup.show {
-  display: block;
-  opacity: 1;
-}
-
+/* ===== BUTTON POPUP ===== */
 .next-button {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .next-button button {
@@ -336,7 +251,7 @@ input[type="submit"]:hover {
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 15px 18px;
+  padding: 12px 16px;
   cursor: pointer;
   font-weight: 600;
   transition: 0.2s ease;
@@ -344,36 +259,10 @@ input[type="submit"]:hover {
 
 .next-button button:hover {
   background-color: #001d49;
-  transition: 0.2s ease;
 }
 
-.error-input {
-  border: 2px solid #ff3737 !important;
-  background: #fff5f5;
-  animation: shake 0.35s ease;
-}
-
-.error-text {
-  color: #ff2222;
-  font-size: 13px;
-  margin-top: 10px;
-  font-weight: 500;
-}
-
-.more-tittle {
-  position: absolute;
-}
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-5px); }
-  80% { transform: translateX(5px); }
-  100% { transform: translateX(0); }
-}
-
-.toast{
+/* ===== TOAST ===== */
+.toast {
   position: fixed;
   top: 25px;
   right: -350px;
@@ -388,7 +277,63 @@ input[type="submit"]:hover {
   z-index: 9999;
 }
 
-.toast.show{
+.toast.show {
   right: 30px;
   opacity: 1;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 240px;
+  }
+
+  body.sidebar-open .sidebar-toggle {
+    transform: translateX(260px);
+  }
+
+  .ticket {
+    padding: 25px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+
+  .ticket {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .ticket h2 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  input[type="submit"] {
+    font-size: 14px;
+    padding: 14px;
+  }
+
+  .sidebar-toggle {
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+  }
 }
