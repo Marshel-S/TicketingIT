@@ -326,12 +326,10 @@ app.get("/api/ticket-stats", (req, res) => {
   let params = [];
 
   if (role === "user") {
-    // 👤 user → hanya ticket miliknya
     sql += " WHERE requester = ?";
-    params.push(username); // atau userId kalau requester = ID
+    params.push(username);
 
   } else if (role === "technical") {
-    // 👨‍💻 technical → hanya ticket yang di-assign ke dia
     sql += " WHERE assigned_to = ?";
     params.push(userId);
   }
