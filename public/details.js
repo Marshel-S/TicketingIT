@@ -62,10 +62,6 @@ function updateStatusColor(status, el) {
   }
 }
 
-/* =========================
-   🔥 TAMBAHAN ASSIGN MODAL
-========================= */
-
 function createAssignModal() {
   const modal = document.createElement("div");
   modal.classList.add("modal");
@@ -204,10 +200,6 @@ async function loadDetails() {
       window.location.href = "/ticket";
     });
 
-    /* =========================
-       🔥 LOGIC ASSIGN (ADMIN)
-    ========================= */
-
   async function assignTicket(id, technicalId) {
   const res = await fetch(`/api/tickets/${id}/assign`, {
     method: "PATCH",
@@ -223,7 +215,7 @@ async function loadDetails() {
   console.log("ASSIGN RESPONSE:", data);
 
   if (!res.ok) {
-    throw new Error(data.message || "Assign gagal");
+    throw new Error(data.message || "Failed to Assign");
   }
 
   return data;
@@ -244,7 +236,7 @@ async function loadDetails() {
       console.log("ASSIGNED TO:", assigned_to);
 
       if (!assigned_to) {
-        alert("Pilih technical dulu!");
+        alert("Choose Technician first!");
         return;
       }
 
@@ -264,7 +256,7 @@ async function loadDetails() {
   return;
 }
 
-    /* ========================= */
+/* ========================= */
 
     if (!nextStatus) {
       nextBtn.style.display = "none";

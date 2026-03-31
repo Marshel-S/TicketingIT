@@ -275,7 +275,8 @@ th .sort-icon {
   font-weight: 600;
   display: inline-block;
   text-align: center;
-  min-width: 70px
+  min-width: 70px;
+  cursor: default;
 }
 
 .status.unassigned {
