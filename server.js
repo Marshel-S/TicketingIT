@@ -6,6 +6,8 @@ const path = require("path")
 
 const app = express();
 
+const activeUsers = [];
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));;
 
@@ -91,7 +93,11 @@ app.get("/api/session", (req, res) => {
     res.json({
       loggedIn: true,
       username: req.session.user.username,
-      role: req.session.user.role
+      role: req.session.user.role,
+      activeUsers: activeUsers.map(u => ({
+        username: u.username,
+        role: u.role
+      }))
     });
   } else {
     res.json({ loggedIn: false });

@@ -256,8 +256,6 @@ async function loadDetails() {
   return;
 }
 
-/* ========================= */
-
     if (!nextStatus) {
       nextBtn.style.display = "none";
       return;

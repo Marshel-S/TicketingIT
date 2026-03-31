@@ -64,6 +64,14 @@ router.post("/login", (req, res) => {
           role: user.role
         };
 
+        if (typeof activeUsers !== "undefined") {
+          activeUsers.push({
+          username: req.session.user.username,
+          role: req.session.user.role,
+          sessionID: req.sessionID
+        });
+      }
+
         return res.json({ success: true });
       } else {
         return res.json({ success: false, message: "Wrong Identifier or Password" });
