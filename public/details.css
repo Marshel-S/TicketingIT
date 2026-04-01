@@ -61,7 +61,7 @@ body {
 }
 
 .message-box {
-  min-height: 60px;
+  min-height: 50px;
   max-height: 250px;
   align-items: flex-start;
   padding-top: 12px;
@@ -73,7 +73,7 @@ body {
 
 .attachment-link {
   display: inline-block;
-  padding: 0px 8px;
+  padding: 0px 0px;
   border-radius: 8px;
   color: #002c8b;
   font-weight: 500;

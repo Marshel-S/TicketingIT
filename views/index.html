@@ -6,15 +6,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<script>
-  function toggleSidebar() {
-    document.body.classList.toggle('sidebar-open');
-  }
-</script>
-
 <body>
 
-  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
 <aside class="sidebar">
   <h2>TicketingIT - PSG</h2>
@@ -31,43 +25,49 @@
 
 <div class="ticket">
 <h2>Add New Ticket</h2>
- 
-<form id="ticketForm" action="/api/tickets" method="post" enctype="multipart/form-data">
 
-  <h4>Subject</h4>
-  <input name="subject" placeholder="Was our problem? (Max 50 Character)" required><br>
+  <form id="ticketForm" enctype="multipart/form-data">
 
-  <h4>Requester</h4>
-  <input name="requester" id="userInput" placeholder="Load user..." disabled><br>
+  <div class="form-grid">
 
-  <h4>Email</h4>
-  <input name="email" type="email" placeholder="ichbin@gmail.com" required><br>
+    <div class="form-left">
+      <h4>Subject</h4>
+      <input name="subject" placeholder="Was our problem? (Max 50 Character)" required>
 
-  <h4>Select Image</h4>
-  <input type="file" id="attachment" name="attachment">
+      <h4>Requester</h4>
+      <input name="requester" id="userInput" disabled>
 
-  <h4>Message</h4>
-  <textarea name="message" placeholder="Type your problem here.." required></textarea><br>
+      <h4>Email</h4>
+      <input name="email" type="email" placeholder="ichbin@gmail.com" required>
+    </div>
 
-  <h4>Status</h4>
-  <select name="status" id="status" disabled>
-    <option value="Unassigned">Unassigned</option>
-    <option value="Assigned">Assigned</option>
-    <option value="In Progress">On Progress</option>
-    <option value="In review">In review</option>
-    <option value="Done">Done</option>
-  </select>
+      <div class="form-right">
+        <h4>Select Image</h4>
+        <input type="file" name="attachment" required>
 
-  <select name="priority" required>
-    <option value="" disabled selected>Select Priority</option>
-    <option>Low</option>
-    <option>Normal</option>
-    <option>Critical</option>
-    <option>Urgent</option>
-  </select><br>
+        <h4>Message</h4>
+        <textarea name="message" placeholder="Type your problem here.." required></textarea>
 
-  <input type="submit">
-</form>
+        <h4>Status</h4>
+        <select name="status" disabled>
+          <option>Unassigned</option>
+        </select>
+
+        <h4>Priority</h4>
+        <select name="priority" required>
+          <option value="" disabled selected>Select Priority</option>
+          <option>Low</option>
+          <option>Normal</option>
+          <option>Critical</option>
+          <option>Urgent</option>
+        </select>
+      </div>
+
+    </div>
+
+    <input type="submit">
+
+  </form>
 </div>
 
 <div class="overlay" id="overlay"></div>
@@ -83,7 +83,13 @@
 </div>
 
 <script>
-console.log("Form Script was working");
+  function toggleSidebar() {
+    document.body.classList.toggle('sidebar-open');
+  }
+</script>
+
+<script>
+  console.log("Form Script was working");
 
 const form = document.getElementById("ticketForm");
 const popup = document.getElementById("popup");
@@ -103,7 +109,6 @@ async function loadUser() {
 
 loadUser();
 
-// ===== FUNCTION POPUP =====
 function showPopup(title, message) {
   popupTitle.innerText = title;
   popupMessage.innerText = message;
@@ -111,7 +116,6 @@ function showPopup(title, message) {
   overlay.classList.add("show");
 }
 
-// ===== CLOSE POPUP =====
 closeBtn.addEventListener("click", () => {
   popup.classList.remove("show");
   overlay.classList.remove("show");

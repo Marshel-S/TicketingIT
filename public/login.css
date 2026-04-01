@@ -149,6 +149,51 @@ body {
   text-decoration: underline;
 }
 
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9b6;
+    transition: 0.3s ease;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ===== DISABLED ===== */
+select:disabled {
+  cursor: not-allowed;
+  background-color: rgb(255, 190, 190);
+  color: rgb(182, 0, 0);
+}
+
+/* ===== BUTTON ===== */
+input[type="submit"] {
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #0047a5, #0a4281);
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    transition: 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(180deg, #00367e, #083161);
+}
+
 #userInput {
   background-color: #dae5ff;
   font-style: italic;
