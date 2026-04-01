@@ -314,6 +314,34 @@ app.patch("/api/tickets/:id/assign", (req, res) => {
   });
 });
 
+app.patch("/api/tickets/:id/reject", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false });
+  }
+
+  const ticketId = req.params.id;
+  const { reason } = req.body;
+  const username = req.session.user.username;
+
+  const sql = `
+  UPDATE ticket
+  SET 
+    status = 'Revision',
+    reject_reason = ?,
+    rejected_by = ?
+  WHERE id = ?
+`;
+
+  db.query(sql, [reason, username, ticketId], (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ success: false });
+    }
+
+    res.json({ success: true });
+  });
+});
+
 app.get("/api/ticket-stats", (req, res) => {
 
   if (!req.session.user) {

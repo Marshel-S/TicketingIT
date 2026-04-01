@@ -152,6 +152,7 @@ header,
   margin-top: clamp(100px, 18vh, 130px);
   padding: 0;
   scroll-margin-top: 140px;
+  cursor: default;
 }
 
 .list table {
@@ -330,6 +331,16 @@ th .sort-icon {
 }
 
 .status.done:hover {
+  transform: scale(1.09);
+  transition: 0.2s ease;
+}
+
+.status.revision {
+  background: #ffcbe3;
+  color: #a50037;
+}
+
+.status.revision:hover {
   transform: scale(1.09);
   transition: 0.2s ease;
 }

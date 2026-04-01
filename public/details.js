@@ -17,24 +17,28 @@ function getNextFlow(status) {
     "unassigned": "Assigned",
     "assigned": "In Progress",
     "in progress": "In Review",
-    "in review": "Done"
+    "in review": "Done",
+    "revision": "In Progress"
   };
   return flow[status] || null;
 }
 
 function isAllowed(role, currentStatus, nextStatus) {
 
+  nextStatus = nextStatus.toLowerCase();
+
   if (role === "admin") return true;
 
   if (role === "technical") {
     return (
-      (currentStatus === "assigned" && nextStatus === "In Progress") ||
-      (currentStatus === "in progress" && nextStatus === "In Review")
+      (currentStatus === "assigned" && nextStatus === "in progress") ||
+      (currentStatus === "in progress" && nextStatus === "in review") ||
+      (currentStatus === "revision" && nextStatus === "in progress")
     );
   }
 
   if (role === "user") {
-    return currentStatus === "in review" && nextStatus === "Done";
+    return currentStatus === "in review" && nextStatus === "done";
   }
 
   return false;
@@ -58,6 +62,9 @@ function updateStatusColor(status, el) {
       break;
     case "done":
       el.classList.add("done");
+      break;
+    case "revision":
+      el.classList.add("revision");
       break;
   }
 }
@@ -119,6 +126,30 @@ async function assignTicket(ticketId, assigned_to) {
   });
 }
 
+function createRejectModal() {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Reject Ticket</h3>
+
+      <textarea id="rejectReason" placeholder="Tulis alasan reject..." rows="4" style="width:100%;"></textarea>
+
+      <div style="margin-top:15px;">
+        <button id="confirmReject">Submit</button>
+        <button id="closeReject">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.querySelector("#closeReject").onclick = () => modal.remove();
+
+  return modal;
+}
+
 /* ========================= */
 
 async function loadDetails() {
@@ -163,9 +194,24 @@ async function loadDetails() {
           </div>
         </div>
 
+        <div class="field-row">
+
         <div class="field">
           <label>Message</label>
           <div class="value message-box">${data.message}</div>
+        </div>
+
+        <div class="field">
+          <label>Reject Reason</label>
+          <div class="value message-box">
+            ${
+              data.reject_reason
+                ? `Rejected by ${data.rejected_by}: ${data.reject_reason}`
+                : "-"
+            }
+          </div>
+        </div>
+
         </div>
 
         <div class="field">
@@ -199,6 +245,51 @@ async function loadDetails() {
     backBtn.addEventListener("click", () => {
       window.location.href = "/ticket";
     });
+
+  if (userRole === "user" && currentStatus === "in review") {
+
+      const rejectBtn = document.createElement("button");
+      rejectBtn.innerText = "Reject";
+      rejectBtn.classList.add("btn-reject");
+
+      document.querySelector(".action-buttons").appendChild(rejectBtn);
+
+      rejectBtn.onclick = () => {
+        const modal = createRejectModal();
+
+        modal.querySelector("#confirmReject").onclick = async () => {
+          const reason = modal.querySelector("#rejectReason").value.trim();
+
+          if (!reason) {
+            alert("Reason are required!");
+            return;
+          }
+
+          try {
+            const res = await fetch(`/api/tickets/${id}/reject`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ reason })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+              alert("Ticket has been rejected successfully");
+              window.location.href = "/ticket";
+            } else {
+              alert("Rejected failed");
+            }
+
+          } catch (err) {
+            console.error(err);
+            alert("Terjadi kesalahan");
+          }
+        };
+      };
+    }
 
   async function assignTicket(id, technicalId) {
   const res = await fetch(`/api/tickets/${id}/assign`, {
