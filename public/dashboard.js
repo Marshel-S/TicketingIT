@@ -15,8 +15,9 @@ fetch("/api/ticket-stats")
     let progress = data.in_progress;
     let review = data.in_review;
     let done = data.done;
+    let revision = data.revision;
 
-    let total = assigned + progress + review + done;
+    let total = assigned + progress + review + done + revision;
 
     if (total === 0) total = 1;
 
@@ -24,11 +25,13 @@ fetch("/api/ticket-stats")
     let progressPercent = (progress / total) * 100;
     let reviewPercent = (review / total) * 100;
     let donePercent = (done / total) * 100;
+    let revisionPercent = (revision / total) * 100;
 
     document.getElementById("assignedBar").style.width = assignedPercent + "%";
     document.getElementById("progressBar").style.width = progressPercent + "%";
     document.getElementById("reviewBar").style.width = reviewPercent + "%";
     document.getElementById("doneBar").style.width = donePercent + "%";
+    document.getElementById("revisionBar").style.width = revisionPercent + "%";
 
 // update text
 document.getElementById("assignedText").innerText =
@@ -42,5 +45,8 @@ review + " Ticket (" + reviewPercent.toFixed(0) + "%)";
 
 document.getElementById("doneText").innerText =
 done + " Ticket (" + donePercent.toFixed(0) + "%)";
+
+document.getElementById("revisionText").innerText =
+revision + " Ticket (" + revisionPercent.toFixed(0) + "%)";
 
 });

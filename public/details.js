@@ -44,6 +44,15 @@ function isAllowed(role, currentStatus, nextStatus) {
   return false;
 }
 
+function canReject(role, currentStatus) {
+  currentStatus = currentStatus.toLowerCase();
+
+  return (
+    currentStatus === "in review" &&
+    ["user", "admin"].includes(role)
+  );
+}
+
 function updateStatusColor(status, el) {
   el.className = "value status";
 
@@ -132,9 +141,11 @@ function createRejectModal() {
 
   modal.innerHTML = `
     <div class="modal-content">
-      <h3>Reject Ticket</h3>
+      <h3>Ticket Rejection</h3>
 
-      <textarea id="rejectReason" placeholder="Tulis alasan reject..." rows="4" style="width:100%;"></textarea>
+      <textarea id="rejectReason" placeholder="Write a reason to Reject.." rows="4" style="width:100%;"></textarea>
+
+      <div id="rejectText"></div>
 
       <div style="margin-top:15px;">
         <button id="confirmReject">Submit</button>
@@ -246,50 +257,53 @@ async function loadDetails() {
       window.location.href = "/ticket";
     });
 
-  if (userRole === "user" && currentStatus === "in review") {
+  if (canReject(userRole, currentStatus)) {
 
-      const rejectBtn = document.createElement("button");
-      rejectBtn.innerText = "Reject";
-      rejectBtn.classList.add("btn-reject");
+  const rejectBtn = document.createElement("button");
+  rejectBtn.innerText = "Reject";
+  rejectBtn.classList.add("btn-reject");
 
-      document.querySelector(".action-buttons").appendChild(rejectBtn);
+  document.querySelector(".action-buttons").appendChild(rejectBtn);
 
-      rejectBtn.onclick = () => {
-        const modal = createRejectModal();
+  rejectBtn.onclick = () => {
+    const modal = createRejectModal();
 
-        modal.querySelector("#confirmReject").onclick = async () => {
-          const reason = modal.querySelector("#rejectReason").value.trim();
+    modal.querySelector("#confirmReject").onclick = async () => {
+      const reason = modal.querySelector("#rejectReason").value.trim();
+      const errorText = document.getElementById("rejectText");
 
-          if (!reason) {
-            alert("Reason are required!");
-            return;
-          }
+      if (!reason) {
+        document.getElementById("rejectReason").classList.add("error-reject");
+        errorText.innerText = "Reason are required to fill";
+        return;
+      }
 
-          try {
-            const res = await fetch(`/api/tickets/${id}/reject`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ reason })
-            });
+      try {
+        const res = await fetch(`/api/tickets/${id}/reject`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ reason })
+        });
 
-            const data = await res.json();
+        const data = await res.json();
 
-            if (data.success) {
-              alert("Ticket has been rejected successfully");
-              window.location.href = "/ticket";
-            } else {
-              alert("Rejected failed");
-            }
+        if (data.success) {
+          alert("Ticket has been rejected successfully");
+          window.location.href = "/ticket";
+        } else {
+          alert("Rejected failed");
+        }
 
-          } catch (err) {
-            console.error(err);
-            alert("Terjadi kesalahan");
-          }
-        };
-      };
-    }
+      } catch (err) {
+        console.error(err);
+        alert("Terjadi kesalahan");
+      }
+    };
+  };
+
+}
 
   async function assignTicket(id, technicalId) {
   const res = await fetch(`/api/tickets/${id}/assign`, {

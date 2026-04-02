@@ -338,6 +338,7 @@ th .sort-icon {
 .status.revision {
   background: #ffcbe3;
   color: #a50037;
+  transition: 0.2s ease;
 }
 
 .status.revision:hover {

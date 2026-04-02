@@ -61,6 +61,16 @@ app.get("/api/user", isAuthenticated, (req, res) => {
 app.use("/", authRoutes);
 
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use((req, res, next) => {
+  if (req.url.startsWith("/dashboard") || req.url.startsWith("/ticket")) {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+  }
+  next();
+});
+
 app.use("/uploads", express.static("uploads"));
 
 const storage = multer.diskStorage({
@@ -76,6 +86,15 @@ const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
   res.send("Server berjalan");
+});
+
+app.get("/dashboard", (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login.html");
+  }
+
+  res.setHeader("Cache-Control", "no-store");
+  res.sendFile(__dirname + "/dashboard");
 });
 
 app.get("/test-insert", (req, res) => {
@@ -382,7 +401,8 @@ app.get("/api/ticket-stats", (req, res) => {
       assigned: 0,
       in_progress: 0,
       in_review: 0,
-      done: 0
+      done: 0,
+      revision: 0
     };
 
     results.forEach(row => {

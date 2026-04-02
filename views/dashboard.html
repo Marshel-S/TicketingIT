@@ -6,6 +6,7 @@
     <title>TicketingIT - Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <script>
@@ -90,6 +91,18 @@
     <a href="/ticket?status=Done">Details</a>
   </div>
 
+  <div class="status-card-rev">
+    <h3>Revision</h3>
+
+    <div class="progress-bar">
+      <div class="progress" id="revisionBar"></div>
+    </div>
+
+    <p id="revisionText"></p>
+
+    <a href="/ticket?status=Revision">Details</a>
+  </div>
+
 </div>
 
 <div class="bottom-list">
@@ -134,7 +147,7 @@
 
     if (data.loggedIn) {
       document.getElementById("greetings").innerText =
-        "Welcome, " + data.username;
+        "Welcome, " + data.username + "!";
     }
 
   } catch (err) {

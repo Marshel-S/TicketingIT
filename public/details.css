@@ -373,6 +373,28 @@ body {
   cursor: not-allowed;
 }
 
+.error-reject {
+  border: 2px solid #ff3737 !important;
+  background: #fffdfd;
+  animation: shake 0.35s ease;
+}
+
+#rejectText {
+  color: #ff2222;
+  font-size: 12px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
 @media (max-width: 900px) {
   .details-grid {
     grid-template-columns: 1fr;
