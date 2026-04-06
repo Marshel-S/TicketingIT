@@ -31,9 +31,22 @@ function isAuthenticated(req, res, next) {
   if (req.session && req.session.user) {
     return next();
   } else {
-    return res.redirect("/login.html");
+    return res.redirect("/login");
   }
 }
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "signup.html"));
+});
+
+app.get("/forgot-password", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "forgotpassword.html"));
+});
+
 app.get("/dashboard", isAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "dashboard.html"));
 });
@@ -52,10 +65,6 @@ app.get("/about", isAuthenticated, (req, res) => {
 
 app.get("/contact", isAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "contact.html"));
-});
-
-app.get("/forgotPassword", isAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "forgotpassword.html"));
 });
 
 app.get("/api/user", isAuthenticated, (req, res) => {
@@ -94,7 +103,7 @@ app.get("/", (req, res) => {
 
 app.get("/dashboard", (req, res) => {
   if (!req.session.user) {
-    return res.redirect("/login.html");
+    return res.redirect("/login");
   }
 
   res.setHeader("Cache-Control", "no-store");

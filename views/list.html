@@ -59,6 +59,7 @@
 </table>
 
 <button onclick="goForm()">Back to Form</button>
+<button id="backHome" onclick="goHome()">Back to Home</button>
 </div>
 
 <script>
@@ -267,6 +268,10 @@ async function deleteTicket(id) {
 function goForm() {
   window.location.href = "/create";
 }
+
+function goHome() {
+    window.location.href = "/dashboard";
+  }
 
 </script>
 

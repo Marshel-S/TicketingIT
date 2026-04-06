@@ -85,6 +85,9 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.post("/forgot-password", (req, res) => {
+  
+})
 
 // ================= LOGOUT =================
 router.get("/logout", (req, res) => {
@@ -95,7 +98,7 @@ router.get("/logout", (req, res) => {
     }
 
     res.clearCookie("connect.sid");
-    return res.redirect("/login.html");
+    return res.redirect("/login");
   });
 });
 

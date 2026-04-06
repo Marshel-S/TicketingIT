@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f215a, #002c8b, #003380);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.reset-overlay {
+  background-color: rgba(255, 255, 255, 0.966);
+  min-width: 38%;
+  padding: 40px;
+  border-radius: 20px;
+  border: none;
+  font-size: smaller;
+}
+
+.reset-overlay h1 {
+  color: #00378a;
+}
+
+.reset-overlay p {
+  margin-top: 3px;
+}
+
+.reset-overlay h4 {
+  margin: 20px 0px 15px;
+}
+
+.reset-overlay input {
+  margin: 2px 0px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.432);
+}
+
+#resetBtn {
+  width: 100%;
+  background-color: #003483;
+  color: #f9f9f9;
+  cursor: pointer;
+  transition: ease-in-out;
+  transition-duration: 0.15s;
+}
+
+#resetBtn:hover {
+  background-color: #002a69;
+  color: #d3d3d3;
+  transition: ease-in-out;
+  transition-duration: 0.15s;
+}
+
+.reset-overlay a {
+  text-decoration: none;
+  color: #00319b;
+}
+
+.reset-overlay a:hover {
+  text-decoration: underline;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9b6;
+    transition: 0.3s ease;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ===== BUTTON ===== */
+input[type="submit"] {
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #0047a5, #0a4281);
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    transition: 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(180deg, #00367e, #083161);
+    transition: 0.2s ease;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 1000;
+}
+
+.overlay.show {
+  display: block;
+}

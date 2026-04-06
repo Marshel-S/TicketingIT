@@ -104,7 +104,7 @@ header {
   top: 0;
   width: 100%;
   padding: 25px 0;
-  box-shadow: 0 30px 60px -40px #00308a;
+  box-shadow: 0 30px 60px -40px #00102e;
   z-index: 1000;
 }
 
@@ -157,7 +157,7 @@ header,
 }
 
 .status-card-rev {
-  grid-column: 1 / -1; /* full lebar */
+  grid-column: 1 / -1;
   width: 100%;
   display: flex;
   position: relative;
