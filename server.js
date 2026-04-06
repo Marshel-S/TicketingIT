@@ -54,6 +54,10 @@ app.get("/contact", isAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "contact.html"));
 });
 
+app.get("/forgotPassword", isAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "forgotpassword.html"));
+});
+
 app.get("/api/user", isAuthenticated, (req, res) => {
   res.json(req.session.user);
 });
