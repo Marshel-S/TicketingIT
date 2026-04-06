@@ -85,9 +85,7 @@
     <div class="progress-bar">
       <div class="progress" id="doneBar"></div>
     </div>
-
     <p id="doneText"></p>
-
     <a href="/ticket?status=Done">Details</a>
   </div>
 
@@ -163,7 +161,6 @@
   });
 
   const data = await res.json();
-
   const tbody = document.getElementById("dashboardTickets");
 
   tbody.innerHTML = "";
@@ -182,15 +179,12 @@
         <td>${t.subject}</td>
         <td>${t.requester}</td>
         <td>${t.email}</td>
-
         <td>
           <span class="status ${statusClass}">
             ${statusText}
           </span>
         </td>
-
         <td>${t.priority}</td>
-
       </tr>
     `;
 

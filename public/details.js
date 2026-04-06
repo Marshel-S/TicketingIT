@@ -84,10 +84,16 @@ function createAssignModal() {
 
   modal.innerHTML = `
     <div class="modal-content">
-      <h3>Assign Ticket</h3>
+      <h3><u>Assign</u> Ticket</h3>
 
+      <h4>Technician</h4>
       <select id="technicalSelect">
-        <option value="">Choose Technician</option>
+        <option value="" disabled selected>Choose Technician</option>
+      </select>
+
+      <h4 id="competency">Competency</h4>
+      <select id="competencySelect">
+        <option value="">All</option>
       </select>
 
       <div style="margin-top:15px;">

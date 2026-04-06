@@ -59,6 +59,10 @@ app.get("/ticket", isAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "list.html"));
 });
 
+app.get("/details", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "details.html"));
+});
+
 app.get("/about", isAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "about.html"));
 });
