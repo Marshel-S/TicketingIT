@@ -4,14 +4,14 @@ const bcrypt = require("bcryptjs");
 const db = require("../userdb");
 
 router.post("/register", (req, res) => {
-  const { identifier, password, confirmPassword } = req.body;
+  const { identifier, email, password, confirmPassword } = req.body;
 
-  if (!identifier || !password || !confirmPassword) {
+  if (!identifier || !email || !password || !confirmPassword) {
     return res.send("Semua field wajib diisi");
   }
 
   if (password !== confirmPassword) {
-    return res.send("Password tidak sama");
+    return res.send("Password are not match");
   }
 
   bcrypt.hash(password, 10, (err, hashedPassword) => {
@@ -21,8 +21,8 @@ router.post("/register", (req, res) => {
     }
 
     db.query(
-      "INSERT INTO requester (email, password) VALUES (?, ?)",
-      [identifier, hashedPassword],
+      "INSERT INTO requester (email, mail, password) VALUES (?, ?, ?)",
+      [identifier, email, hashedPassword],
       (err, result) => {
         if (err) {
           console.error(err);

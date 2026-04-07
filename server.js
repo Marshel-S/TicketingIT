@@ -71,6 +71,22 @@ app.get("/contact", isAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "contact.html"));
 });
 
+app.get("/reset-password", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "resetpassword.html"));
+});
+
+app.get("/verify-token", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "verifytoken.html"));
+});
+
+app.get("/new-password", (req, res) => {
+  if (!req.session.resetToken) {
+    return res.redirect("/verify-token");
+  }
+
+  res.sendFile(path.join(__dirname, "views", "newpassword.html"));
+});
+
 app.get("/api/user", isAuthenticated, (req, res) => {
   res.json(req.session.user);
 });
@@ -438,6 +454,103 @@ app.get("/api/ticket-stats", (req, res) => {
 
   });
 
+});
+
+app.post("/reset-password", (req, res) => {
+  const { identifier, email } = req.body;
+
+  db.query(
+    "SELECT * FROM user.requester WHERE email=? AND mail=?",
+    [identifier, email],
+    (err, results) => {
+      if (err) {
+        console.log("DB ERROR:", err);
+        return res.send("Error database");
+      }
+
+      if (results.length === 0) {
+        return res.send("Invalid data!");
+      }
+
+      const crypto = require("crypto");
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiry = new Date(Date.now() + 3600000);
+
+      db.query(
+        "UPDATE user.requester SET reset_token=?, reset_token_expiry=? WHERE email=?",
+        [token, expiry, identifier],
+        (err) => {
+          if (err) {
+            console.log("UPDATE ERROR:", err);
+            return res.send("Failed to keep Token");
+          }
+
+          console.log("RESET TOKEN:", token);
+
+          req.session.resetToken = token;
+
+          res.redirect("/verify-token");
+        }
+      );
+    }
+  );
+});
+
+app.post("/verify-token", (req, res) => {
+  const { token } = req.body;
+
+  db.query(
+    "SELECT * FROM user.requester WHERE reset_token=? AND reset_token_expiry > NOW()",
+    [token],
+    (err, results) => {
+      if (err) return res.send("Error");
+
+      if (results.length === 0) {
+        return res.send("Wrong or expired Token");
+      }
+
+      req.session.verifiedToken = token;
+
+      res.redirect("/new-password");
+    }
+  );
+});
+
+app.post("/reset-password-confirm", async (req, res) => {
+  const { password } = req.body;
+  const token = req.session.verifiedToken;
+
+  if (!token) {
+    return res.send("Invalid Access");
+  }
+
+  const bcrypt = require("bcrypt");
+
+  db.query(
+    "SELECT * FROM user.requester WHERE reset_token=? AND reset_token_expiry > NOW()",
+    [token],
+    async (err, results) => {
+      if (err) return res.send("Error");
+
+      if (results.length === 0) {
+        return res.send("Invalid Token");
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      db.query(
+        "UPDATE user.requester SET password=?, reset_token=NULL, reset_token_expiry=NULL WHERE reset_token=?",
+        [hashedPassword, token],
+        (err) => {
+          if (err) return res.send("Failed to update Password");
+
+          req.session.verifiedToken = null;
+
+          res.send("Password has reset successfully");
+        }
+      );
+    }
+  );
 });
 
 app.listen(3000, () => {

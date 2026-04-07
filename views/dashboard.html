@@ -130,7 +130,10 @@
 <script src="notification.js"></script>
 
     <script>
-  alert("Welcome to TicketingIT - Enjoy your problem!"); 
+  if (!sessionStorage.getItem("alreadyShown")) {
+    alert("Welcome to TicketingIT - Enjoy your problem!");
+    sessionStorage.setItem("alreadyShown", "true");
+  }
   
   window.addEventListener("DOMContentLoaded", async () => {
 
