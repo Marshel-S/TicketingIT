@@ -26,14 +26,32 @@ app.use(session({
 }));
 
 function isAuthenticated(req, res, next) {
-  console.log("SESSION CHECK:", req.session);
+  const publicRoutes = ['/login', '/about', '/contact'];
 
-  if (req.session && req.session.user) {
+  if (
+    req.path.startsWith('/css') ||
+    req.path.startsWith('/js') ||
+    req.path.startsWith('/images') ||
+    req.path.endsWith('.css') ||
+    req.path.endsWith('.js') ||
+    req.path.endsWith('.png') ||
+    req.path.endsWith('.jpg')
+  ) {
     return next();
-  } else {
-    return res.redirect("/login");
   }
+
+  if (publicRoutes.includes(req.path)) {
+    return next();
+  }
+
+  if (req.session.user) {
+    return next();
+  }
+
+  res.redirect('/login');
 }
+
+app.use(isAuthenticated);
 
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
@@ -625,8 +643,6 @@ app.post("/api/contact", async (req, res) => {
               <td>: ${company || "-"}</td>
             </tr>
           </table>
-
-          <br>
 
           <p>Mr/Mrs. ${lastname} has submitted a contact request via the website and is interested in obtaining further information regarding the services offered.<br><br>
             Kindly contact the user using the provided email address or telephone number to proceed with follow-up.</p>
