@@ -553,6 +553,112 @@ app.post("/reset-password-confirm", async (req, res) => {
   );
 });
 
+const nodemailer = require("nodemailer");
+
+app.use(express.json());
+
+const RECEIVER_EMAIL = "dehausst@gmail.com";
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "dehausst@gmail.com",
+    pass: "xmll cvqy qkni jqhv"
+  }
+});
+
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { email, name, company, phone } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({
+        success: false,
+        message: "Nama, email, dan pesan wajib diisi"
+      });
+    }
+
+    const defaultMessage = `
+      ${name} mengirim permintaan kontak melalui website.
+
+      From:
+      - Nama: ${name}
+      - Email: ${email}
+      - No HP: ${phone || "-"}
+      - Company: ${company || "-"}
+    `;
+
+    const mailOptions = {
+      from: `"TicketingIT" <dehausst@gmail.com>`,
+      to: RECEIVER_EMAIL,
+      replyTo: email,
+      subject: `Contact Request - ${name}`,
+      html: `
+      <div style="font-family: 'Poppins', Arial, Helvetica, sans-serif; background:#f4f6f8; padding:20px;">
+      
+      <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+        
+        <div style="background:#003c96; color:white; padding:20px;">
+          <h2 style="margin:0;">TicketingIT Contact Request</h2>
+          <p style="margin:5px 0 0;">New message from TicketingIT Contact</p>
+        </div>
+
+        <div style="padding:20px; color:#333;">
+          
+          <p><strong>${name}</strong> mengirim permintaan kontak.</p>
+
+          <table style="width:100%; margin-top:15px; border-collapse:collapse;">
+            <tr>
+              <td style="padding:8px 0;"><strong>Nama</strong></td>
+              <td>: ${name}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>Email</strong></td>
+              <td>: ${email}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>Phone</strong></td>
+              <td>: ${phone || "-"}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;"><strong>Company</strong></td>
+              <td>: ${company || "-"}</td>
+            </tr>
+          </table>
+
+        </div>
+
+        <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#777;">
+          This Email automaticaly sent from TicketingIT contact form.
+        </div>
+
+      </div>
+      
+    </div>
+    `
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.send(`
+      <script>
+        alert('Pesan berhasil dikirim!');
+        window.location.href = "/contact";
+      </script>
+    `);
+
+  } catch (err) {
+    console.error("EMAIL ERROR:", err);
+
+    res.status(500).send(`
+      <script>
+        alert('Terjadi kesalahan saat mengirim email!');
+        window.location.href = "/contact";
+      </script>
+    `);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server running di http://localhost:3000");
 });

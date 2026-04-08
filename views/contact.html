@@ -35,7 +35,7 @@
 <div class="container">
 
 <div class="form-contact">
-<form action="" id="contactForm" method="post"></form>
+<form action="/api/contact" id="contactForm" method="post">
 
 <h1>Talk to an Expert</h1>
 <p>Ask anything to made your service!</p><br>
@@ -44,20 +44,21 @@
 <input name="email" type="email" placeholder="Business E-mail *" required>
 
 <h4>First Name</h4>
-<input type="text" id="firstName" placeholder="Your First Name *" required>
+<input name="name" type="text" id="firstName" placeholder="Your First Name *" required>
 
 <h4>Last Name</h4>
-<input type="text" id="lastName" placeholder="Your Last Name">
+<input name="lastname" type="text" id="lastName" placeholder="Your Last Name">
 
 <h4>Company</h4>
-<input type="text" id="company" placeholder="Enter your Company Name *" required>
+<input name="company" type="text" id="company" placeholder="Enter your Company Name *" required>
 
 <h4>Phone</h4>
-<input type="number" id="phoneNumber" placeholder="Enter your Phone Number *" required>
+<input name="phone" type="number" id="phoneNumber" placeholder="Enter your Phone Number *" required>
 
 <p class="statement">By submitting this form, I confirm that I have read and agree to the <a> Privacy Statement.</a></p>
 
 <input type="submit" value="Contact" id="submit"><br>
+</form>
 
 <s>Fields with an asterisk (*) are required to fill.</s>
 </div>
@@ -78,23 +79,51 @@
   <h3><i class="fa-solid fa-envelope"></i>tickit@gmail.com</h3>
   </div>
 
-</div>
-</div>
-
-<script>
-  const form = document.getElementById("contactForm");
-
-  async function loadUser() {
+  <script>
   const res = await fetch("/api/session");
   const data = await res.json();
 
-  if (data.loggedIn) {
-    document.getElementById("userInput").value = data.username;
+const form = document.getElementById("contactForm");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const data = {
+    email: form.email.value,
+    name: form.name.value,
+    company: form.company.value,
+    phone: form.phone.value
+  };
+
+  try {
+    const res = await fetch("http://localhost:3000/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      alert("Success!" + result.message);
+      form.reset();
+    } else {
+      alert("Failed to Contact" + result.message);
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Gagal terhubung ke server");
   }
-}
+});
 
 loadUser();
 </script>
+
+</div>
+</div>
 </div>
 </body>
 </html>
