@@ -569,7 +569,7 @@ const transporter = nodemailer.createTransport({
 
 app.post("/api/contact", async (req, res) => {
   try {
-    const { email, name, company, phone } = req.body;
+    const { email, subject, name, lastname, company, phone } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({
@@ -582,7 +582,7 @@ app.post("/api/contact", async (req, res) => {
       ${name} mengirim permintaan kontak melalui website.
 
       From:
-      - Nama: ${name}
+      - Nama: ${name} ${lastname} 
       - Email: ${email}
       - No HP: ${phone || "-"}
       - Company: ${company || "-"}
@@ -592,7 +592,7 @@ app.post("/api/contact", async (req, res) => {
       from: `"TicketingIT" <dehausst@gmail.com>`,
       to: RECEIVER_EMAIL,
       replyTo: email,
-      subject: `Contact Request - ${name}`,
+      subject: `Contact Request - ${subject}`,
       html: `
       <div style="font-family: 'Poppins', Arial, Helvetica, sans-serif; background:#f4f6f8; padding:20px;">
       
@@ -605,12 +605,12 @@ app.post("/api/contact", async (req, res) => {
 
         <div style="padding:20px; color:#333;">
           
-          <p><strong>${name}</strong> mengirim permintaan kontak.</p>
+          <p><strong>Mr/Mrs. ${lastname}</strong> send contact request.</p>
 
           <table style="width:100%; margin-top:15px; border-collapse:collapse;">
             <tr>
               <td style="padding:8px 0;"><strong>Nama</strong></td>
-              <td>: ${name}</td>
+              <td>: ${name} ${lastname}</td>
             </tr>
             <tr>
               <td style="padding:8px 0;"><strong>Email</strong></td>
@@ -625,6 +625,11 @@ app.post("/api/contact", async (req, res) => {
               <td>: ${company || "-"}</td>
             </tr>
           </table>
+
+          <br>
+
+          <p>Mr/Mrs. ${lastname} has submitted a contact request via the website and is interested in obtaining further information regarding the services offered.<br><br>
+            Kindly contact the user using the provided email address or telephone number to proceed with follow-up.</p>
 
         </div>
 
