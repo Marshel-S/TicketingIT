@@ -35,5 +35,11 @@
 
     <script src="notification.js"></script>
     <script src="/login.js"></script>
+    <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("reset") === "success") {
+        alert("Password has been reset successfully!");
+    }
+    </script>
 </body>
 </html>

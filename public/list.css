@@ -153,6 +153,9 @@ header,
   padding: 0;
   scroll-margin-top: 140px;
   cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .list table {

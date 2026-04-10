@@ -3,12 +3,22 @@ const authRoutes = require("./routes/auth");
 const db = require("./db");
 const multer = require("multer");
 const path = require("path")
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "dehausst@gmail.com",
+    pass: "xmll cvqy qkni jqhv"
+  }
+});
 
 const app = express();
 
 const activeUsers = [];
 
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));;
 
 const session = require("express-session");
@@ -26,7 +36,18 @@ app.use(session({
 }));
 
 function isAuthenticated(req, res, next) {
-  const publicRoutes = ['/login', '/about', '/contact'];
+  const publicRoutes = [
+    '/login',
+    '/about',
+    '/contact',
+    '/forgot-password',
+    '/register',
+    '/reset-password',
+    '/verify-token',
+    '/new-password',
+    '/api/contact',
+    '/reset-password-confirm'
+  ];
 
   if (
     req.path.startsWith('/css') ||
@@ -487,7 +508,7 @@ app.post("/reset-password", (req, res) => {
       }
 
       if (results.length === 0) {
-        return res.send("Invalid data!");
+        return res.redirect("/verify-token");
       }
 
       const crypto = require("crypto");
@@ -503,11 +524,79 @@ app.post("/reset-password", (req, res) => {
             return res.send("Failed to keep Token");
           }
 
-          console.log("RESET TOKEN:", token);
+      const mailOptions = {
+        from: "dehausst@gmail.com",
+        to: email,
+        subject: "Password Reset Token",
+        html: `
+          <div style="font-family: 'Poppins', Arial, sans-serif; background-color: #f4f6f9; padding: 20px;">
+          <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          <div style="background: #003686; padding: 20px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 22px;">
+            Password Reset Request
+          </h1>
+        </div>
 
-          req.session.resetToken = token;
+        <!-- Body -->
+        <div style="padding: 30px; color: #333;">
+          <p style="margin-bottom: 15px;">We are <strong>TicketingIT Request Support!</strong></p>
+          
+          <p style="margin-bottom: 15px;">
+            You requested a password reset for your account.
+          </p>
 
-          res.redirect("/verify-token");
+          <p style="margin-bottom: 10px;">
+            Your verification token is:
+          </p>
+
+          <div style="text-align: center; margin: 20px 0;">
+            <span style="
+              display: inline-block;
+              padding: 10px 18px;
+              font-size: 18px;
+              letter-spacing: 2px;
+              font-weight: bold;
+              color: #003686;
+              background: #eef3ff;
+              border-radius: 8px;
+              box-sizing: border-box;
+              max-width: 100%;
+            ">
+              ${token}
+            </span>
+          </div>
+
+          <p style="margin-bottom: 15px;">
+            This token will expire in <b>1 hour</b>.
+          </p>
+
+          <p style="margin-bottom: 0;">
+            If you did not request this, please ignore this email.
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div style="background: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #777;">
+          © 2026 Your Company. All rights reserved.
+        </div>
+
+      </div>
+    </div>
+        `
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log("EMAIL ERROR:", err);
+          return res.send("Failed to send email");
+        }
+
+        console.log("Email sent:", info.response);
+
+        req.session.resetToken = token;
+
+        res.redirect("/verify-token");
+        });
         }
       );
     }
@@ -524,8 +613,13 @@ app.post("/verify-token", (req, res) => {
       if (err) return res.send("Error");
 
       if (results.length === 0) {
-        return res.send("Wrong or expired Token");
-      }
+      return res.send(`
+        <script>
+          alert("Wrong or expired Token");
+          window.location.href = "/verify-token";
+        </script>
+      `);
+    }
 
       req.session.verifiedToken = token;
 
@@ -535,11 +629,19 @@ app.post("/verify-token", (req, res) => {
 });
 
 app.post("/reset-password-confirm", async (req, res) => {
-  const { password } = req.body;
+  const { password, confirmpassword } = req.body;
   const token = req.session.verifiedToken;
+
+  console.log("PASS:", password);
+  console.log("CONFIRM:", confirmpassword);
+  console.log("TOKEN:", token);
 
   if (!token) {
     return res.send("Invalid Access");
+  }
+
+  if (password !== confirmpassword) {
+    return res.send("Password and confirm password do not match");
   }
 
   const bcrypt = require("bcrypt");
@@ -554,36 +656,35 @@ app.post("/reset-password-confirm", async (req, res) => {
         return res.send("Invalid Token");
       }
 
+      const user = results[0];
       const hashedPassword = await bcrypt.hash(password, 10);
 
       db.query(
-        "UPDATE user.requester SET password=?, reset_token=NULL, reset_token_expiry=NULL WHERE reset_token=?",
-        [hashedPassword, token],
-        (err) => {
-          if (err) return res.send("Failed to update Password");
+        "UPDATE user.requester SET password=?, reset_token=NULL, reset_token_expiry=NULL WHERE email=?",
+        [hashedPassword, user.email],
+        (err, result) => {
+          if (err) {
+            console.log("UPDATE ERROR:", err);
+            return res.send("Failed to update Password");
+          }
+
+          console.log("UPDATE RESULT:", result);
+
+          if (result.affectedRows === 0) {
+            return res.send("Password not updated");
+          }
 
           req.session.verifiedToken = null;
-
-          res.send("Password has reset successfully");
+          res.redirect("/login?reset=success");
         }
       );
     }
   );
 });
 
-const nodemailer = require("nodemailer");
-
 app.use(express.json());
 
 const RECEIVER_EMAIL = "dehausst@gmail.com";
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "dehausst@gmail.com",
-    pass: "xmll cvqy qkni jqhv"
-  }
-});
 
 app.post("/api/contact", async (req, res) => {
   try {
