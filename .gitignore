@@ -12,3 +12,4 @@ ngrok.exe
 
 # uploads (opsional)
 uploads/
+/generated/prisma

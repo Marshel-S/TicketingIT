@@ -7,11 +7,19 @@ router.post("/register", (req, res) => {
   const { identifier, email, password, confirmPassword } = req.body;
 
   if (!identifier || !email || !password || !confirmPassword) {
-    return res.send("Semua field wajib diisi");
+    return res.send("Field are required to fill");
   }
 
   if (password !== confirmPassword) {
     return res.send("Password are not match");
+  }
+
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+    return res.send(
+      "At least 8 character, an uppercase and including Special Character"
+    );
   }
 
   bcrypt.hash(password, 10, (err, hashedPassword) => {
@@ -41,7 +49,7 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  db.query("SELECT * FROM requester WHERE email = ?", [email], async (err, result) => {
+  db.query("SELECT * FROM requester WHERE email = ? OR mail = ?", [email, email], async (err, result) => {
 
     if (err) {
       console.log(err);

@@ -644,6 +644,14 @@ app.post("/reset-password-confirm", async (req, res) => {
     return res.send("Password and confirm password do not match");
   }
 
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+    return res.send(
+      "At least 8 character, an uppercase and including Special Character"
+    );
+  }
+
   const bcrypt = require("bcrypt");
 
   db.query(
@@ -698,10 +706,10 @@ app.post("/api/contact", async (req, res) => {
     }
 
     const defaultMessage = `
-      ${name} mengirim permintaan kontak melalui website.
+      ${name} send Contact Request through website.
 
       From:
-      - Nama: ${name} ${lastname} 
+      - Nama: ${name} ${lastname}
       - Email: ${email}
       - No HP: ${phone || "-"}
       - Company: ${company || "-"}
