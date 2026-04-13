@@ -338,6 +338,10 @@ header,
   padding: 0 10px;
   padding-bottom: 20px;
   overflow-x: auto;
+  cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .bottom-list h2 {

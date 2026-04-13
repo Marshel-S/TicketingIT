@@ -137,15 +137,16 @@ select:disabled {
 }
 
 .error-input {
-  border: 2px solid #ff3737 !important;
-  background: #fff5f5;
+  border: 3px solid #ff3737 !important;
+  background: #fff9f9;
   animation: shake 0.35s ease;
 }
 
 .error-text {
+  inline-size: 100%;
   color: #ff2222;
   font-size: 13px;
-  margin-top: 10px;
+  margin: 0 15px;
   font-weight: 500;
 }
 

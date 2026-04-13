@@ -17,10 +17,8 @@ router.post("/register", (req, res) => {
   const passwordRegex = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
 
   if (!passwordRegex.test(password)) {
-    return res.send(
-      "At least 8 character, an uppercase and including Special Character"
-    );
-  }
+  return res.redirect("/register?error=password");
+}
 
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
@@ -69,6 +67,7 @@ router.post("/login", (req, res) => {
         req.session.user = {
           id: user.ID,
           username: user.username || user.email,
+          email: user.email,
           role: user.role
         };
 

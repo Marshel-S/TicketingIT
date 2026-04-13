@@ -184,9 +184,11 @@ app.get("/api/session", (req, res) => {
     res.json({
       loggedIn: true,
       username: req.session.user.username,
+      email: req.session.user.email,
       role: req.session.user.role,
       activeUsers: activeUsers.map(u => ({
         username: u.username,
+        email: u.email,
         role: u.role
       }))
     });
