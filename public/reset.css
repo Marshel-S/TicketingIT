@@ -119,3 +119,30 @@ input[type="submit"]:hover {
 .overlay.show {
   display: block;
 }
+
+.error-input {
+  border: 3px solid #ff3737 !important;
+  background: #fff9f9;
+  animation: shake 0.35s ease;
+}
+
+.error-text {
+  inline-size: 100%;
+  color: #ff2222;
+  font-size: 13px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.more-tittle {
+  position: absolute;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}

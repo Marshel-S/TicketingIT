@@ -10,15 +10,15 @@ router.post("/register", (req, res) => {
     return res.send("Field are required to fill");
   }
 
-  if (password !== confirmPassword) {
-    return res.send("Password are not match");
-  }
-
   const passwordRegex = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
 
   if (!passwordRegex.test(password)) {
-  return res.redirect("/register?error=password");
-}
+    return res.redirect("/register?error=password");
+  }
+
+  if (password !== confirmPassword) {
+    return res.redirect("/register?error=confirmPassword");
+  }
 
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {

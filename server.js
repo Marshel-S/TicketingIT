@@ -649,10 +649,8 @@ app.post("/reset-password-confirm", async (req, res) => {
   const passwordRegex = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
 
   if (!passwordRegex.test(password)) {
-    return res.send(
-      "At least 8 character, an uppercase and including Special Character"
-    );
-  }
+  return res.redirect("/new-password?error=password");
+}
 
   const bcrypt = require("bcrypt");
 
