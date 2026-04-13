@@ -13,3 +13,10 @@ ngrok.exe
 # uploads (opsional)
 uploads/
 /generated/prisma
+
+# server
+server.js
+
+# prisma
+prisma/schema.prisma
+prisma.config.ts
