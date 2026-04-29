@@ -1,29 +1,27 @@
 const express = require("express");
-const serverless = require("serverless-http");
-const session = require("express-session");
 const authRoutes = require("./routes/auth");
 const db = require("./db");
 const multer = require("multer");
 const path = require("path")
 const nodemailer = require("nodemailer");
 
-const app = express();
-
-const baseDir = process.cwd();
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: "dehausst@gmail.com",
+    pass: "xmll cvqy qkni jqhv"
   }
 });
+
+const app = express();
 
 const activeUsers = [];
 
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));;
+
+const session = require("express-session");
 
 app.set('trust proxy', 1);
 
@@ -75,9 +73,6 @@ function isAuthenticated(req, res, next) {
 }
 
 app.use(isAuthenticated);
-
-app.use(express.static(path.join(baseDir, "public")));
-app.use("/uploads", express.static(path.join(baseDir, "uploads")));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
@@ -798,4 +793,7 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-module.exports.handler = serverless(app);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running in ${PORT}`);
+});
